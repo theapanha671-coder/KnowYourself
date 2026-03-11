@@ -11,8 +11,65 @@ const Career = require("../models/Career");
 const Post = require("../models/Post");
 const Video = require("../models/Video");
 const Experience = require("../models/Experience");
+const TestResult = require("../models/TestResult");
 
 router.use(requireAuth, requireAdmin);
+// --- Overview / Stats ---
+router.get("/stats", async (_req, res) => {
+  const [
+    majors,
+    majorsKm,
+    careers,
+    careersKm,
+    posts,
+    postsKm,
+    videos,
+    videosKm,
+    experiences,
+    users,
+    admins,
+    testResults
+  ] = await Promise.all([
+    Major.countDocuments({}),
+    Major.countDocuments({ titleKm: { $exists: true, $ne: "" } }),
+    Career.countDocuments({}),
+    Career.countDocuments({ titleKm: { $exists: true, $ne: "" } }),
+    Post.countDocuments({}),
+    Post.countDocuments({ titleKm: { $exists: true, $ne: "" } }),
+    Video.countDocuments({}),
+    Video.countDocuments({ titleKm: { $exists: true, $ne: "" } }),
+    Experience.countDocuments({}),
+    User.countDocuments({}),
+    User.countDocuments({ role: "admin" }),
+    TestResult.countDocuments({})
+  ]);
+
+  const [latestMajor, latestCareer, latestPost, latestVideo, latestExperience, latestUser] = await Promise.all([
+    Major.findOne({}).sort({ updatedAt: -1 }).select("_id title titleKm updatedAt"),
+    Career.findOne({}).sort({ updatedAt: -1 }).select("_id title titleKm updatedAt"),
+    Post.findOne({}).sort({ updatedAt: -1 }).select("_id title titleKm updatedAt"),
+    Video.findOne({}).sort({ updatedAt: -1 }).select("_id title titleKm updatedAt"),
+    Experience.findOne({}).sort({ updatedAt: -1 }).select("_id title updatedAt"),
+    User.findOne({}).sort({ updatedAt: -1 }).select("_id name email role updatedAt")
+  ]);
+
+  const contentTotal = majors + careers + posts + videos;
+  const contentKm = majorsKm + careersKm + postsKm + videosKm;
+  const kmCoveragePct = contentTotal ? Math.round((contentKm / contentTotal) * 100) : 0;
+
+  res.json({
+    counts: { majors, careers, posts, videos, experiences, users, admins, testResults },
+    khmerCoverage: { total: contentTotal, khmer: contentKm, pct: kmCoveragePct },
+    latest: {
+      major: latestMajor,
+      career: latestCareer,
+      post: latestPost,
+      video: latestVideo,
+      experience: latestExperience,
+      user: latestUser
+    }
+  });
+});
 
 function parseCsv(value) {
   if (!value) return [];
@@ -50,8 +107,10 @@ if (multer) {
   const uploadsRoot = path.join(__dirname, "../../uploads");
   const majorsUploadDir = path.join(uploadsRoot, "majors");
   const postsUploadDir = path.join(uploadsRoot, "posts");
+  const careersUploadDir = path.join(uploadsRoot, "careers");
   ensureDir(majorsUploadDir);
   ensureDir(postsUploadDir);
+  ensureDir(careersUploadDir);
 
   function makeUpload(destinationDir, prefix) {
     return multer({
@@ -74,6 +133,7 @@ if (multer) {
 
   const uploadMajor = makeUpload(majorsUploadDir, "major");
   const uploadPost = makeUpload(postsUploadDir, "post");
+  const uploadCareer = makeUpload(careersUploadDir, "career");
 
   router.post("/uploads/major-image", uploadMajor.single("file"), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "Missing file" });
@@ -86,6 +146,12 @@ if (multer) {
     const url = `/uploads/posts/${req.file.filename}`;
     res.status(201).json({ url });
   });
+
+  router.post("/uploads/career-image", uploadCareer.single("file"), async (req, res) => {
+    if (!req.file) return res.status(400).json({ message: "Missing file" });
+    const url = `/uploads/careers/${req.file.filename}`;
+    res.status(201).json({ url });
+  });
 } else {
   router.post("/uploads/major-image", async (_req, res) => {
     res.status(501).json({
@@ -93,14 +159,21 @@ if (multer) {
         "Upload feature not installed. Run `npm install` in server/ to install dependencies (multer), or set Image URL manually."
     });
   });
+
   router.post("/uploads/post-image", async (_req, res) => {
     res.status(501).json({
       message:
         "Upload feature not installed. Run `npm install` in server/ to install dependencies (multer), or set Image URL manually."
     });
   });
-}
 
+  router.post("/uploads/career-image", async (_req, res) => {
+    res.status(501).json({
+      message:
+        "Upload feature not installed. Run `npm install` in server/ to install dependencies (multer), or set Image URL manually."
+    });
+  });
+}
 // --- Users ---
 router.get("/users", async (_req, res) => {
   const users = await User.find({})
@@ -236,6 +309,7 @@ router.post("/careers", async (req, res) => {
     titleKm: String(body.titleKm || ""),
     description: String(body.description || ""),
     descriptionKm: String(body.descriptionKm || ""),
+    imageUrl: String(body.imageUrl || ""),
     skills: parseCsv(body.skills),
     skillsKm: parseCsv(body.skillsKm),
     roadmap: roadmap.map((r) => ({
@@ -257,6 +331,7 @@ router.put("/careers/:id", async (req, res) => {
     ...(body.titleKm !== undefined ? { titleKm: String(body.titleKm) } : {}),
     ...(body.description !== undefined ? { description: String(body.description) } : {}),
     ...(body.descriptionKm !== undefined ? { descriptionKm: String(body.descriptionKm) } : {}),
+    ...(body.imageUrl !== undefined ? { imageUrl: String(body.imageUrl) } : {}),
     ...(body.skills !== undefined ? { skills: parseCsv(body.skills) } : {}),
     ...(body.skillsKm !== undefined ? { skillsKm: parseCsv(body.skillsKm) } : {})
   };
@@ -427,3 +502,8 @@ router.delete("/experiences/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+
+
+
+

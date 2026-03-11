@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Protected from "./components/Protected.jsx";
@@ -32,6 +32,22 @@ import AdminUsers from "./pages/admin/AdminUsers.jsx";
 export default function App() {
   const i18n = useI18n();
   const location = useLocation();
+
+  useEffect(() => {
+    if (window.AOS) {
+      window.AOS.init({
+        duration: 800,
+        once: true,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.AOS) {
+      window.AOS.refresh();
+    }
+  }, [location.pathname]);
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+﻿const mongoose = require("mongoose");
 
 const careerSchema = new mongoose.Schema(
   {
@@ -7,6 +7,7 @@ const careerSchema = new mongoose.Schema(
     titleKm: { type: String, default: "" },
     description: { type: String, default: "" },
     descriptionKm: { type: String, default: "" },
+    imageUrl: { type: String, default: "" },
     skills: { type: [String], default: [] },
     skillsKm: { type: [String], default: [] },
     roadmap: {
@@ -25,3 +26,5 @@ const careerSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Career", careerSchema);
+
+

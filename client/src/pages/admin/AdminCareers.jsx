@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+﻿import React, { useEffect, useMemo, useState } from "react";
 import Card from "../../components/Card.jsx";
 import Field from "../../components/Field.jsx";
 import { http } from "../../api/http.js";
@@ -13,6 +13,7 @@ const empty = {
   titleKm: "",
   description: "",
   descriptionKm: "",
+  imageUrl: "",
   skills: "",
   skillsKm: "",
   roadmap: [emptyStep()]
@@ -25,6 +26,8 @@ export default function AdminCareers() {
   const [form, setForm] = useState(empty);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   function toCsv(arr) {
     return (arr || []).join(", ");
@@ -45,11 +48,13 @@ export default function AdminCareers() {
 
   function select(item) {
     setActive(item);
+    setImageFile(null);
     setForm({
       title: item.title || "",
       titleKm: item.titleKm || "",
       description: item.description || "",
       descriptionKm: item.descriptionKm || "",
+      imageUrl: item.imageUrl || "",
       skills: toCsv(item.skills),
       skillsKm: toCsv(item.skillsKm),
       roadmap: (item.roadmap?.length ? item.roadmap : [emptyStep()]).map((r) => ({
@@ -69,19 +74,40 @@ export default function AdminCareers() {
   function updateStep(index, patch) {
     const next = form.roadmap.slice();
     next[index] = { ...next[index], ...patch };
+    setImageFile(null);
     setForm({ ...form, roadmap: next });
   }
 
   function addStep() {
+    setImageFile(null);
     setForm({ ...form, roadmap: [...form.roadmap, emptyStep()] });
   }
 
   function removeStep(index) {
     const next = form.roadmap.slice();
     next.splice(index, 1);
+    setImageFile(null);
     setForm({ ...form, roadmap: next.length ? next : [emptyStep()] });
   }
 
+
+  async function uploadCareerImage() {
+    if (!imageFile) return;
+    setError("");
+    try {
+      setUploading(true);
+      const data = new FormData();
+      data.append("file", imageFile);
+      const res = await http.post("/admin/uploads/career-image", data, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      setForm((prev) => ({ ...prev, imageUrl: res.data?.url || "" }));
+    } catch (e) {
+      setError(e?.response?.data?.message || i18n.t("admin.uploadFail"));
+    } finally {
+      setUploading(false);
+    }
+  }
   async function save() {
     setError("");
     try {
@@ -173,7 +199,32 @@ export default function AdminCareers() {
               onChange={(e) => setForm({ ...form, descriptionKm: e.target.value })}
             />
           </Field>
-          <Field label={i18n.t("admin.field.skillsEn")}>
+          <Field label={i18n.t("admin.field.imageUrl")} hint="/images/careers/software-developer.svg">
+            <input
+              className="input"
+              value={form.imageUrl}
+              onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+              placeholder="/uploads/careers/your-icon.svg"
+            />
+          </Field>
+          <div className="grid gap-2 md:grid-cols-[1fr,auto] md:items-end">
+            <Field label={i18n.t("admin.field.uploadImage")} hint={i18n.t("admin.field.uploadHint")}>
+              <input
+                className="input"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              />
+            </Field>
+            <button
+              type="button"
+              disabled={!imageFile || uploading}
+              onClick={uploadCareerImage}
+              className="btn-secondary press"
+            >
+              {uploading ? i18n.t("admin.uploading") : i18n.t("admin.upload")}
+            </button>
+          </div>          <Field label={i18n.t("admin.field.skillsEn")}>
             <input className="input" value={form.skills} onChange={(e) => setForm({ ...form, skills: e.target.value })} />
           </Field>
           <Field label={i18n.t("admin.field.skillsKm")}>
@@ -244,3 +295,11 @@ export default function AdminCareers() {
     </div>
   );
 }
+
+
+
+
+
+
+
+

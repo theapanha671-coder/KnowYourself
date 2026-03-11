@@ -31,7 +31,7 @@ export default function MajorsPage() {
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         {majors.map((m) => (
-          <Link key={m.slug} to={`/majors/${m.slug}`}>
+          <Link key={m.slug} to={`/majors/${m.slug}`} data-aos="fade-up">
             <Card>
               {m.imageUrl ? (
                 <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">

@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -32,6 +32,40 @@
     @apply surface p-5;
   }
 
+  .card-3d {
+    position: relative;
+    transform-style: preserve-3d;
+  }
+
+  .card-3d::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    pointer-events: none;
+    background:
+      radial-gradient(600px 160px at 15% 0%, rgba(255, 255, 255, 0.16), transparent 40%),
+      radial-gradient(600px 160px at 85% 100%, rgba(56, 189, 248, 0.12), transparent 35%);
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card-3d {
+      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease,
+        background-color 220ms ease;
+      will-change: transform;
+    }
+
+    .card-3d:hover {
+      transform: translateY(-3px) rotateX(2deg) rotateY(-2deg);
+      box-shadow: 0 30px 90px -55px rgba(167, 139, 250, 0.55), 0 18px 55px -45px rgba(56, 189, 248, 0.55);
+    }
+
+    .card-3d:hover::before {
+      opacity: 1;
+    }
+  }
   /* Motion */
   @media (prefers-reduced-motion: no-preference) {
     .page-enter {
@@ -117,3 +151,4 @@
     }
   }
 }
+

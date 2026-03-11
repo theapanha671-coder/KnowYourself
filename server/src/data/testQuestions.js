@@ -1,4 +1,4 @@
-// Simple RIASEC-style interest questions.
+﻿// Simple RIASEC-style interest questions.
 // Each question has 4 choices, mapped to one RIASEC code.
 // Bilingual support: `promptKm` and `choices[].textKm` are Khmer translations.
 const QUESTIONS = [
@@ -221,7 +221,119 @@ const QUESTIONS = [
       { text: "Make a creative presentation", textKm: "ធ្វើបទបង្ហាញដែលមានភាពច្នៃប្រឌិត", code: "A" },
       { text: "Repair something that is broken", textKm: "ជួសជុលអ្វីមួយដែលខូច", code: "R" }
     ]
+  },
+  {
+    id: 21,
+    prompt: "Which of these tasks seems most interesting to you?",
+    promptKm: "តើការងារមួយណាក្នុងចំណោមការងារទាំងនេះដែលអ្នកចាប់អារម្មណ៍ជាងគេ?",
+    choices: [
+      { text: "Designing a bridge", textKm: "រចនាស្ពាន", code: "R" },
+      { text: "Developing a new drug", textKm: "អភិវឌ្ឍថ្នាំថ្មី", code: "I" },
+      { text: "Writing a novel", textKm: "សរសេរសៀវភៅប្រលោមលោក", code: "A" },
+      { text: "Starting a new business", textKm: "ចាប់ផ្តើមអាជីវកម្មថ្មី", code: "E" }
+    ]
+  },
+  {
+    id: 22,
+    prompt: "What kind of problems do you like to solve?",
+    promptKm: "តើបញ្ហាបែបណាដែលអ្នកចូលចិត្តដោះស្រាយ?",
+    choices: [
+      { text: "Problems with a clear right and wrong answer", textKm: "បញ្ហាដែលមានចម្លើយត្រូវនិងខុសច្បាស់លាស់", code: "C" },
+      { text: "Problems that require helping people", textKm: "បញ្ហាដែលទាមទារការជួយមនុស្ស", code: "S" },
+      { text: "Problems that require abstract thinking", textKm: "បញ្ហាដែលទាមទារការគិតអរូបី", code: "I" },
+      { text: "Problems that require creativity and innovation", textKm: "បញ្ហាដែលទាមទារភាពច្នៃប្រឌិត និងនវានុវត្តន៍", code: "A" }
+    ]
+  },
+  {
+    id: 23,
+    prompt: "Which subject would you be most excited to study?",
+    promptKm: "តើមុខវិជ្ជាមួយណាដែលអ្នករំភើបនឹងរៀនជាងគេ?",
+    choices: [
+      { text: "The laws of physics", textKm: "ច្បាប់រូបវិទ្យា", code: "I" },
+      { text: "The history of art", textKm: "ប្រវត្តិសាស្រ្តសិល្បៈ", code: "A" },
+      { text: "The principles of economics", textKm: "គោលការណ៍សេដ្ឋកិច្ច", code: "C" },
+      { text: "The anatomy of the human body", textKm: "កាយវិភាគសាស្ត្រនៃរាងកាយមនុស្ស", code: "I" }
+    ]
+  },
+  {
+    id: 24,
+    prompt: "What would you rather do on a computer?",
+    promptKm: "តើអ្នកចង់ធ្វើអ្វីនៅលើកុំព្យូទ័រ?",
+    choices: [
+      { text: "Write code to build an app", textKm: "សរសេរកូដដើម្បីបង្កើតកម្មវិធី", code: "I" },
+      { text: "Design a 3D model", textKm: "រចនាគំរូ 3D", code: "A" },
+      { text: "Manage a large database", textKm: "គ្រប់គ្រងមូលដ្ឋានទិន្នន័យធំ", code: "C" },
+      { text: "Create a marketing campaign", textKm: "បង្កើតយុទ្ធនាការទីផ្សារ", code: "E" }
+    ]
+  },
+  {
+    id: 25,
+    prompt: "Which work environment do you prefer?",
+    promptKm: "តើបរិយាកាសការងារបែបណាដែលអ្នកចូលចិត្ត?",
+    choices: [
+      { text: "A fast-paced, competitive environment", textKm: "បរិយាកាសដែលមានការប្រកួតប្រជែងនិងមានភាពរហ័សរហួន", code: "E" },
+      { text: "A quiet, focused environment", textKm: "បរិយាកាសស្ងប់ស្ងាត់និងមានការផ្ចង់អារម្មណ៍", code: "I" },
+      { text: "A collaborative, team-oriented environment", textKm: "បរិយាកាសដែលមានការសហការនិងធ្វើការជាក្រុម", code: "S" },
+      { text: "A hands-on, practical environment", textKm: "បរិយាកាសដែលផ្តោតលើការអនុវត្ត", code: "R" }
+    ]
+  },
+  {
+    id: 26,
+    prompt: "What is your preferred way of learning?",
+    promptKm: "តើអ្នកចូលចិត្តរៀនតាមវិធីណា?",
+    choices: [
+      { text: "By doing and practicing", textKm: "តាមរយៈការធ្វើនិងអនុវត្ត", code: "R" },
+      { text: "By reading and researching", textKm: "តាមរយៈការអាននិងស្រាវជ្រាវ", code: "I" },
+      { text: "By discussing and debating with others", textKm: "តាមរយៈការពិភាក្សានិងជជែកវែកញែកជាមួយអ្នកដទៃ", code: "S" },
+      { text: "By observing and imitating", textKm: "តាមរយៈការសង្កេត និងធ្វើតាម", code: "A" }
+    ]
+  },
+  {
+    id: 27,
+    prompt: "Which of these would you rather create?",
+    promptKm: "តើអ្នកចង់បង្កើតអ្វីមួយណាក្នុងចំណោមរបស់ទាំងនេះ?",
+    choices: [
+      { text: "A detailed financial report", textKm: "របាយការណ៍ហិរញ្ញវត្ថុលម្អិត", code: "C" },
+      { text: "A piece of music", textKm: "បទភ្លេង", code: "A" },
+      { text: "A business plan", textKm: "ផែនការអាជីវកម្ម", code: "E" },
+      { text: "A scientific theory", textKm: "ទ្រឹស្តីវិទ្យាសាស្ត្រ", code: "I" }
+    ]
+  },
+  {
+    id: 28,
+    prompt: "When working on a project, what is most important to you?",
+    promptKm: "នៅពេលធ្វើគម្រោងតើអ្វីដែលសំខាន់បំផុតសម្រាប់អ្នក?",
+    choices: [
+      { text: "Efficiency and accuracy", textKm: "ប្រសិទ្ធភាព និងភាពត្រឹមត្រូវ", code: "C" },
+      { text: "Creativity and originality", textKm: "ភាពច្នៃប្រឌិត និងគំនិតផ្តួចផ្តើម", code: "A" },
+      { text: "Making a profit", textKm: "រកប្រាក់ចំណេញ", code: "E" },
+      { text: "Making a difference in the world", textKm: "ធ្វើឲ្យមានការផ្លាស់ប្តូរនៅក្នុងពិភពលោក", code: "S" }
+    ]
+  },
+  {
+    id: 29,
+    prompt: "Which of these activities sounds most appealing?",
+    promptKm: "តើសកម្មភាពមួយណាដែលទាក់ទាញជាងគេ?",
+    choices: [
+      { text: "Defending someone in court", textKm: "ការពារនរណាម្នាក់នៅក្នុងតុលាការ", code: "E" },
+      { text: "Conducting a scientific experiment", textKm: "ធ្វើពិសោធន៍វិទ្យាសាស្ត្រ", code: "I" },
+      { text: "Teaching a class", textKm: "បង្រៀនថ្នាក់", code: "S" },
+      { text: "Building a house", textKm: "សង់ផ្ទះ", code: "R" }
+    ]
+  },
+  {
+    id: 30,
+    prompt: "You are more of a...",
+    promptKm: "អ្នកជាមនុស្ស...",
+    choices: [
+      { text: "Thinker", textKm: "អ្នកគិត", code: "I" },
+      { text: "Doer", textKm: "អ្នកធ្វើ", code: "R" },
+      { text: "Creator", textKm: "អ្នកបង្កើត", code: "A" },
+      { text: "Helper", textKm: "អ្នកជួយ", code: "S" }
+    ]
   }
 ];
 
 module.exports = { QUESTIONS };
+
+

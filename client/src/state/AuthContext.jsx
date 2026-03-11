@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+﻿import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { http, setAuthToken } from "../api/http.js";
 
 const AuthContext = createContext(null);
@@ -48,6 +48,11 @@ export function AuthProvider({ children }) {
         setToken(data.token);
         setUser(data.user);
       },
+      async refresh() {
+        if (!token) return;
+        const { data } = await http.get("/users/me");
+        setUser(data.user);
+      },
       logout() {
         localStorage.removeItem(TOKEN_KEY);
         setToken(null);
@@ -65,4 +70,6 @@ export function useAuth() {
   if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
   return ctx;
 }
+
+
 

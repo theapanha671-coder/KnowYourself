@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs");
+﻿const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
@@ -25,7 +25,7 @@ async function register(req, res) {
   const token = signToken(user);
   return res.status(201).json({
     token,
-    user: { id: user._id, name: user.name, email: user.email }
+    user: { id: user._id, name: user.name, email: user.email, role: user.role, avatarUrl: user.avatarUrl }
   });
 }
 
@@ -44,9 +44,10 @@ async function login(req, res) {
   const token = signToken(user);
   return res.json({
     token,
-    user: { id: user._id, name: user.name, email: user.email }
+    user: { id: user._id, name: user.name, email: user.email, role: user.role, avatarUrl: user.avatarUrl }
   });
 }
 
 module.exports = { register, login };
+
 
