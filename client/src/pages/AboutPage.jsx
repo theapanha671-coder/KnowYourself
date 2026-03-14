@@ -1,14 +1,10 @@
-import React from "react";
+﻿import React from "react";
 import Container from "../components/Container.jsx";
 import Card from "../components/Card.jsx";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
 function Icon({ children }) {
-  return (
-    <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/5">
-      {children}
-    </div>
-  );
+  return <div className="surface grid h-10 w-10 place-items-center">{children}</div>;
 }
 
 export default function AboutPage() {
@@ -39,7 +35,12 @@ export default function AboutPage() {
     { title: i18n.t("about.features.f6.title"), text: i18n.t("about.features.f6.text") }
   ];
 
-  const howSteps = [i18n.t("about.how.s1"), i18n.t("about.how.s2"), i18n.t("about.how.s3"), i18n.t("about.how.s4")];
+  const howSteps = [
+    i18n.t("about.how.s1"),
+    i18n.t("about.how.s2"),
+    i18n.t("about.how.s3"),
+    i18n.t("about.how.s4")
+  ];
 
   const future = [i18n.t("about.future.b1"), i18n.t("about.future.b2"), i18n.t("about.future.b3")];
 
@@ -52,7 +53,9 @@ export default function AboutPage() {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="chip">KnowYourself</span>
                 <span className="chip">Cambodia</span>
-                <span className="chip">{i18n.lang === "km" ? "ខ្មែរ" : "EN"} + {i18n.lang === "km" ? "English" : "ខ្មែរ"}</span>
+                <span className="chip">
+                  {i18n.lang === "km" ? "ខ្មែរ" : "EN"} + {i18n.lang === "km" ? "English" : "ខ្មែរ"}
+                </span>
               </div>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight">{i18n.t("about.title")}</h2>
               <p className="mt-2 max-w-2xl text-slate-200/75">{i18n.t("about.text")}</p>
@@ -198,10 +201,7 @@ export default function AboutPage() {
             <div className="text-lg font-semibold">{i18n.t("about.how.title")}</div>
             <ol className="mt-4 grid gap-3">
               {howSteps.map((s, idx) => (
-                <li
-                  key={s}
-                  className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4"
-                >
+                <li key={s} className="surface flex items-start gap-3 rounded-xl p-4">
                   <div className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-sky-500/15 text-sm font-bold text-sky-200">
                     {idx + 1}
                   </div>

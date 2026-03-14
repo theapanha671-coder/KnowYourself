@@ -12,6 +12,9 @@
     "nav.login": "Login",
     "nav.register": "Register",
     "nav.language": "Language",
+    "theme.toggle": "Theme",
+    "theme.light": "Light",
+    "theme.dark": "Dark",
 
     "home.title": "Self Discovery & Career Guidance for Students in Cambodia",
     "home.subtitle":
@@ -339,6 +342,9 @@
     "nav.login": "ចូលគណនី",
     "nav.register": "ចុះឈ្មោះ",
     "nav.language": "ភាសា",
+    "theme.toggle": "រចនាបថ",
+    "theme.light": "ពន្លឺ",
+    "theme.dark": "ងងឹត",
 
     "home.title": "ស្វែងយល់ខ្លួនឯង និងណែនាំអាជីពសម្រាប់សិស្សនៅកម្ពុជា",
     "home.subtitle":
@@ -653,6 +659,7 @@
     "footer.copyright": "© {year} KnowYourself។ រក្សាសិទ្ធិគ្រប់យ៉ាង។"
   }
 };
+
 
 
 
