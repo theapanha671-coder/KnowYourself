@@ -111,6 +111,9 @@
 
     "majors.title": "Major Explorer",
     "majors.subtitle": "Browse majors, skills required, and career options.",
+    "majors.searchPh": "Search majors or skills…",
+    "majors.clear": "Clear",
+    "majors.noResults": "No majors match your search.",
     "majors.loadError": "Failed to load majors. Seed the database first.",
     "majors.skills": "Skills:",
 
@@ -452,6 +455,9 @@
 
     "majors.title": "ស្វែងរកមុខជំនាញ",
     "majors.subtitle": "មើលបញ្ជីមុខជំនាញ ជំនាញត្រូវការ និងជម្រើសអាជីព។",
+    "majors.searchPh": "ស្វែងរកមុខជំនាញ ឬជំនាញ…",
+    "majors.clear": "សម្អាត",
+    "majors.noResults": "មិនមានមុខជំនាញដែលត្រូវនឹងការស្វែងរកទេ។",
     "majors.loadError": "មិនអាចទាញមុខជំនាញបានទេ។ សូម seed ទិន្នន័យជាមុន។",
     "majors.skills": "ជំនាញ៖",
 
@@ -683,6 +689,9 @@
     "footer.copyright": "© {year} KnowYourself។ រក្សាសិទ្ធិគ្រប់យ៉ាង។"
   }
 };
+
+
+
 
 
 
