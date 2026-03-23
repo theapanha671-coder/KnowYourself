@@ -66,7 +66,14 @@ export default function HomePage() {
           addPoint(event.clientX, event.clientY);
         }}
       >
-        <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="home-video-bg" aria-hidden>
+          <video className="home-video-media" autoPlay muted loop playsInline>
+            <source src="/videos/bg.mp4" type="video/mp4" />
+          </video>
+          <div className="home-video-overlay" />
+        </div>
+
+        <div className="pointer-events-none fixed inset-0 z-10">
           {points.map((point) => (
             <span
               key={point.id}
@@ -76,7 +83,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div className="relative z-10 page-enter">
+        <div className="relative z-20 page-enter">
           <div className="grid gap-6 md:grid-cols-2 md:items-center">
             <div className="space-y-5">
               <div className="inline-flex items-center gap-2 fade-in" style={{ animationDelay: "40ms" }}>
