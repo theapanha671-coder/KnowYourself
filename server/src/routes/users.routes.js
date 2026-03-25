@@ -1,9 +1,10 @@
-﻿const router = require("express").Router();
+const router = require("express").Router();
 const fs = require("fs");
 const path = require("path");
 const { requireAuth } = require("../middleware/auth");
 const { me } = require("../controllers/users.controller");
 const User = require("../models/User");
+const { hasCloudinary, uploadBuffer } = require("../config/cloudinary");
 
 router.get("/me", requireAuth, me);
 
@@ -23,18 +24,21 @@ try {
 if (multer) {
   const uploadsRoot = path.join(__dirname, "../../uploads");
   const avatarsDir = path.join(uploadsRoot, "avatars");
-  ensureDir(avatarsDir);
+  const useCloudinary = hasCloudinary();
+  if (!useCloudinary) ensureDir(avatarsDir);
 
   const uploadAvatar = multer({
-    storage: multer.diskStorage({
-      destination: (_req, _file, cb) => cb(null, avatarsDir),
-      filename: (_req, file, cb) => {
-        const ext = path.extname(file.originalname || "").toLowerCase().slice(0, 10);
-        const safeExt = /^[.][a-z0-9]+$/.test(ext) ? ext : "";
-        const name = `avatar_${Date.now()}_${Math.random().toString(16).slice(2)}${safeExt}`;
-        cb(null, name);
-      }
-    }),
+    storage: useCloudinary
+      ? multer.memoryStorage()
+      : multer.diskStorage({
+          destination: (_req, _file, cb) => cb(null, avatarsDir),
+          filename: (_req, file, cb) => {
+            const ext = path.extname(file.originalname || "").toLowerCase().slice(0, 10);
+            const safeExt = /^[.][a-z0-9]+$/.test(ext) ? ext : "";
+            const name = `avatar_${Date.now()}_${Math.random().toString(16).slice(2)}${safeExt}`;
+            cb(null, name);
+          }
+        }),
     limits: { fileSize: 2 * 1024 * 1024 },
     fileFilter: (_req, file, cb) => {
       if (String(file.mimetype || "").startsWith("image/")) return cb(null, true);
@@ -44,7 +48,18 @@ if (multer) {
 
   router.post("/me/avatar", requireAuth, uploadAvatar.single("file"), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "Missing file" });
-    const url = `/uploads/avatars/${req.file.filename}`;
+    let url = "";
+    if (useCloudinary) {
+      const publicId = `avatar_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+      const result = await uploadBuffer(req.file.buffer, {
+        folder: "knowyourself/avatars",
+        public_id: publicId,
+        resource_type: "image"
+      });
+      url = result.secure_url || result.url;
+    } else {
+      url = `/uploads/avatars/${req.file.filename}`;
+    }
     const user = await User.findByIdAndUpdate(
       req.user.sub,
       { avatarUrl: url },

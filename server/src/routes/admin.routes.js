@@ -12,6 +12,7 @@ const Post = require("../models/Post");
 const Video = require("../models/Video");
 const Experience = require("../models/Experience");
 const TestResult = require("../models/TestResult");
+const { hasCloudinary, uploadBuffer } = require("../config/cloudinary");
 
 router.use(requireAuth, requireAdmin);
 // --- Overview / Stats ---
@@ -109,21 +110,26 @@ if (multer) {
   const majorsUploadDir = path.join(uploadsRoot, "majors");
   const postsUploadDir = path.join(uploadsRoot, "posts");
   const careersUploadDir = path.join(uploadsRoot, "careers");
-  ensureDir(majorsUploadDir);
-  ensureDir(postsUploadDir);
-  ensureDir(careersUploadDir);
+  const useCloudinary = hasCloudinary();
+  if (!useCloudinary) {
+    ensureDir(majorsUploadDir);
+    ensureDir(postsUploadDir);
+    ensureDir(careersUploadDir);
+  }
 
   function makeUpload(destinationDir, prefix) {
     return multer({
-      storage: multer.diskStorage({
-        destination: (_req, _file, cb) => cb(null, destinationDir),
-        filename: (_req, file, cb) => {
-          const ext = path.extname(file.originalname || "").toLowerCase().slice(0, 10);
-          const safeExt = /^[.][a-z0-9]+$/.test(ext) ? ext : "";
-          const name = `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2)}${safeExt}`;
-          cb(null, name);
-        }
-      }),
+      storage: useCloudinary
+        ? multer.memoryStorage()
+        : multer.diskStorage({
+            destination: (_req, _file, cb) => cb(null, destinationDir),
+            filename: (_req, file, cb) => {
+              const ext = path.extname(file.originalname || "").toLowerCase().slice(0, 10);
+              const safeExt = /^[.][a-z0-9]+$/.test(ext) ? ext : "";
+              const name = `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2)}${safeExt}`;
+              cb(null, name);
+            }
+          }),
       limits: { fileSize: 3 * 1024 * 1024 },
       fileFilter: (_req, file, cb) => {
         if (String(file.mimetype || "").startsWith("image/")) return cb(null, true);
@@ -132,25 +138,50 @@ if (multer) {
     });
   }
 
+  async function uploadImage(file, folder, prefix) {
+    const publicId = `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+    const result = await uploadBuffer(file.buffer, {
+      folder,
+      public_id: publicId,
+      resource_type: "image"
+    });
+    return result.secure_url || result.url;
+  }
+
   const uploadMajor = makeUpload(majorsUploadDir, "major");
   const uploadPost = makeUpload(postsUploadDir, "post");
   const uploadCareer = makeUpload(careersUploadDir, "career");
 
   router.post("/uploads/major-image", uploadMajor.single("file"), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "Missing file" });
-    const url = `/uploads/majors/${req.file.filename}`;
+    let url = "";
+    if (useCloudinary) {
+      url = await uploadImage(req.file, "knowyourself/majors", "major");
+    } else {
+      url = `/uploads/majors/${req.file.filename}`;
+    }
     res.status(201).json({ url });
   });
 
   router.post("/uploads/post-image", uploadPost.single("file"), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "Missing file" });
-    const url = `/uploads/posts/${req.file.filename}`;
+    let url = "";
+    if (useCloudinary) {
+      url = await uploadImage(req.file, "knowyourself/posts", "post");
+    } else {
+      url = `/uploads/posts/${req.file.filename}`;
+    }
     res.status(201).json({ url });
   });
 
   router.post("/uploads/career-image", uploadCareer.single("file"), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "Missing file" });
-    const url = `/uploads/careers/${req.file.filename}`;
+    let url = "";
+    if (useCloudinary) {
+      url = await uploadImage(req.file, "knowyourself/careers", "career");
+    } else {
+      url = `/uploads/careers/${req.file.filename}`;
+    }
     res.status(201).json({ url });
   });
 } else {
