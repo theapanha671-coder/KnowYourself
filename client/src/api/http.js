@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiBase = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const apiBase = import.meta.env.VITE_API_URL || "https://knowyourself-3x1r.onrender.com/api";
 export const apiOrigin = apiBase.replace(/\/api\/?$/, "");
 
 export const http = axios.create({

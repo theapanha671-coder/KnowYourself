@@ -85,7 +85,7 @@ Option B (local install):
   - Run: `npm run create-admin`
 - Run dev: `npm run dev`
 
-API runs on `http://localhost:4000`.
+API runs on `https://knowyourself-3x1r.onrender.com`.
 
 ### 3) Start the web app
 
