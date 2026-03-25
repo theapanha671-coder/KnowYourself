@@ -10,7 +10,7 @@ if (cloudinaryUrl) {
   cloudinary.config({ cloudinary_url: cloudinaryUrl });
   configured = true;
 } else if (cloudName && apiKey && apiSecret) {
-  cloudinary.config({ cloud_name: dohkxkdhl, api_key: 469155663334978, api_secret: WJJ_aj9yzVFCaUdRm7Q_yXzerI0 });
+  cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
   configured = true;
 }
 
