@@ -470,6 +470,30 @@ async function seed() {
       imageUrl: "/images/majors/language-and-communication.svg",
       skills: ["Mandarin/Cantonese", "Chinese Characters", "Translation", "Cultural Understanding"],
       careers: ["Translator", "Interpreter", "Language Teacher"]
+    },
+    {
+      slug: "psychology",
+      title: "Psychology",
+      description: "Study human behavior, the mind, and mental processes.",
+      imageUrl: "/images/majors/health-and-medical.svg",
+      skills: ["Research methods", "Statistics", "Empathy", "Critical thinking"],
+      careers: ["Psychologist", "Counselor", "HR Specialist"]
+    },
+    {
+      slug: "tourism-and-hospitality",
+      title: "Tourism and Hospitality",
+      description: "Learn to manage travel services, hotels, and guest experiences.",
+      imageUrl: "/images/majors/business-and-management.svg",
+      skills: ["Customer service", "Operations", "Communication", "Event planning"],
+      careers: ["Hotel Manager", "Tour Guide", "Event Coordinator"]
+    },
+    {
+      slug: "biotechnology",
+      title: "Biotechnology",
+      description: "Apply biology and technology to create products in health, agriculture, and industry.",
+      imageUrl: "/images/majors/health-and-medical.svg",
+      skills: ["Molecular biology", "Lab techniques", "Data analysis", "Biochemistry"],
+      careers: ["Biotech Researcher", "Lab Technician", "Quality Control Scientist"]
     }
   ];
   const { MAJOR_KM, PHRASE_KM } = require("./seed.km");
@@ -1263,8 +1287,84 @@ async function seed() {
           detailsKm: "ជ្រើសផ្នែក៖ ពាណិជ្ជកម្ម ការងារ គ្រួសារ ជាដើម។"
         }
       ]
+    },
+    {
+      slug: "data-analyst",
+      title: "Data Analyst",
+      description: "Analyze data to help teams make better decisions.",
+      skills: ["Spreadsheets", "SQL", "Data visualization", "Communication"],
+      imageUrl: "/images/careers/data-scientist.svg",
+      roadmap: [
+        {
+          step: "Learn data basics",
+          details: "Understand data types, cleaning, and simple metrics."
+        },
+        {
+          step: "Practice spreadsheets and SQL",
+          details: "Work with tables, joins, filters, and pivot tables."
+        },
+        {
+          step: "Build dashboards",
+          details: "Use charts and storytelling to explain insights."
+        },
+        {
+          step: "Create a portfolio",
+          details: "Publish 2-3 projects with clear business questions."
+        }
+      ]
+    },
+    {
+      slug: "psychologist",
+      title: "Psychologist",
+      description: "Support mental health through assessment, counseling, and research.",
+      skills: ["Listening", "Research", "Ethics", "Communication"],
+      imageUrl: "/images/careers/doctor.svg",
+      roadmap: [
+        {
+          step: "Study psychology fundamentals",
+          details: "Complete a bachelor program with core psychology courses."
+        },
+        {
+          step: "Learn research methods",
+          details: "Statistics, experiments, and evidence-based practice."
+        },
+        {
+          step: "Get supervised practice",
+          details: "Internships or practicum in counseling settings."
+        },
+        {
+          step: "Specialize and credential",
+          details: "Choose a focus and meet licensing requirements."
+        }
+      ]
+    },
+    {
+      slug: "hotel-manager",
+      title: "Hotel Manager",
+      description: "Lead hotel operations and deliver great guest experiences.",
+      skills: ["Operations", "Customer service", "Leadership", "Budgeting"],
+      imageUrl: "/images/careers/project-manager.svg",
+      roadmap: [
+        {
+          step: "Learn hospitality basics",
+          details: "Front office, housekeeping, food and beverage."
+        },
+        {
+          step: "Build communication skills",
+          details: "Service mindset, conflict resolution, and language practice."
+        },
+        {
+          step: "Gain hands-on experience",
+          details: "Work in multiple departments to learn operations."
+        },
+        {
+          step: "Grow into management",
+          details: "Train in leadership, budgeting, and quality standards."
+        }
+      ]
     }
-  ];  const { CAREER_KM } = require("./seed.careers.km");
+  ];
+  const { CAREER_KM } = require("./seed.careers.km");
   const { CAREER_IMAGE_URL } = require("./seed.careers.assets");
 
   const careersSeed = careers.map((c) => {
@@ -1408,6 +1508,33 @@ async function seed() {
       contentKm:
         "ត្រៀមឲ្យបានមុន៖\n\n- ពិន្ទុ + លិខិតណែនាំ\n- Personal statement (រឿងរ៉ាវ + គោលដៅ)\n- Portfolio/គម្រោង\n- សកម្មភាពស្ម័គ្រចិត្ត/ក្លឹប\n\nជ្រើសសាកលវិទ្យាល័យតាម៖ មុខវិជ្ជាសិក្សា គ្រូ បណ្តាញ internship និងលទ្ធផល alumni។",
       tags: ["education", "students"]
+    },
+    {
+      slug: "how-to-get-an-internship",
+      title: "How to get an internship (student checklist)",
+      excerpt: "Simple steps to find, apply, and follow up on internships.",
+      coverImageUrl: "/images/posts/cv-interview.svg",
+      content:
+        "Start early: make a list of 10 companies and roles you want.\n\nPrepare your CV, a short email, and a 1-page portfolio if you have projects.\n\nApply in batches, follow up after 7 days, and track results in a spreadsheet.",
+      tags: ["job", "students"]
+    },
+    {
+      slug: "learn-by-projects",
+      title: "Learn faster by building projects",
+      excerpt: "Projects turn knowledge into real skills and confidence.",
+      coverImageUrl: "/images/posts/build-a-portfolio.svg",
+      content:
+        "Pick a small project and finish it in one week.\n\nWrite down what you built, what you learned, and what you would improve.\n\nRepeat 3 times and you will have a strong portfolio.",
+      tags: ["skills", "portfolio"]
+    },
+    {
+      slug: "study-abroad-planning",
+      title: "Study abroad planning (start early)",
+      excerpt: "A simple timeline for documents, tests, and scholarships.",
+      coverImageUrl: "/images/posts/scholarship.svg",
+      content:
+        "Start 12 months early: research programs and requirements.\n\n6 months early: prepare documents, test scores, and recommendation letters.\n\n3 months early: submit applications and follow up on scholarships.",
+      tags: ["education", "scholarship"]
     }
   ];
 
