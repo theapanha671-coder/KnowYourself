@@ -50,7 +50,8 @@ router.get("/stats", async (_req, res) => {
     Post.findOne({}).sort({ updatedAt: -1 }).select("_id title titleKm updatedAt"),
     Video.findOne({}).sort({ updatedAt: -1 }).select("_id title titleKm updatedAt"),
     Experience.findOne({}).sort({ updatedAt: -1 }).select("_id title updatedAt"),
-    User.findOne({}).sort({ updatedAt: -1 }).select("_id name email role updatedAt")
+    // Use createdAt so the newest registered user shows up (not the most recently edited).
+    User.findOne({}).sort({ createdAt: -1 }).select("_id name email role createdAt")
   ]);
 
   const contentTotal = majors + careers + posts + videos;

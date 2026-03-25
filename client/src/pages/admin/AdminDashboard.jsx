@@ -420,7 +420,7 @@ export default function AdminDashboard() {
                     <div className="truncate">
                       <span className="chip">{i18n.t("admin.users")}</span> <span className="ml-2">{latest.user.email}</span>
                     </div>
-                    <div className="shrink-0 text-xs text-slate-200/60">{fmtDate(latest.user.updatedAt)}</div>
+                    <div className="shrink-0 text-xs text-slate-200/60">{fmtDate(latest.user.createdAt || latest.user.updatedAt)}</div>
                   </div>
                 ) : null}
                 {!latest?.major && !latest?.career && !latest?.post && !latest?.video && !latest?.experience && !latest?.user ? (
