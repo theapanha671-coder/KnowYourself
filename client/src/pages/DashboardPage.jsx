@@ -153,7 +153,7 @@ export default function DashboardPage() {
     }
   }
 
-  const roleKey = auth.user?.role === "admin" ? "admin.role.admin" : "admin.role.student";
+  const roleKey = auth.user?.role === "admin" ? "admin.role.admin" : auth.user?.role === "employee" ? "admin.role.employee" : "admin.role.student";
 
   return (
     <Container>

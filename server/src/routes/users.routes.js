@@ -4,7 +4,7 @@ const path = require("path");
 const { requireAuth } = require("../middleware/auth");
 const { me } = require("../controllers/users.controller");
 const User = require("../models/User");
-const { hasCloudinary, uploadBuffer } = require("../config/cloudinary");
+const { hasCloudinary, uploadBuffer, deleteByUrl } = require("../config/cloudinary");
 
 router.get("/me", requireAuth, me);
 
@@ -48,6 +48,9 @@ if (multer) {
 
   router.post("/me/avatar", requireAuth, uploadAvatar.single("file"), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "Missing file" });
+    const existing = await User.findById(req.user.sub).select("avatarUrl");
+    if (!existing) return res.status(404).json({ message: "User not found" });
+
     let url = "";
     if (useCloudinary) {
       const publicId = `avatar_${Date.now()}_${Math.random().toString(16).slice(2)}`;
@@ -60,12 +63,17 @@ if (multer) {
     } else {
       url = `/uploads/avatars/${req.file.filename}`;
     }
+
     const user = await User.findByIdAndUpdate(
       req.user.sub,
       { avatarUrl: url },
       { new: true }
-    ).select("_id name email role avatarUrl createdAt");
-    if (!user) return res.status(404).json({ message: "User not found" });
+    ).select("_id name email role permissions avatarUrl createdAt");
+
+    if (existing.avatarUrl && existing.avatarUrl !== url) {
+      await deleteByUrl(existing.avatarUrl);
+    }
+
     res.json({ user });
   });
 } else {

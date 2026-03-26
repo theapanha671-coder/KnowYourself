@@ -5,7 +5,7 @@ const User = require("../models/User");
 function signToken(user) {
   const secret = process.env.JWT_SECRET || "dev_secret";
   const expiresIn = process.env.JWT_EXPIRES_IN || "7d";
-  return jwt.sign({ sub: user._id.toString(), email: user.email, role: user.role }, secret, {
+  return jwt.sign({ sub: user._id.toString(), email: user.email, role: user.role, permissions: user.permissions || [] }, secret, {
     expiresIn
   });
 }
@@ -25,7 +25,7 @@ async function register(req, res) {
   const token = signToken(user);
   return res.status(201).json({
     token,
-    user: { id: user._id, name: user.name, email: user.email, role: user.role, avatarUrl: user.avatarUrl }
+    user: { id: user._id, name: user.name, email: user.email, role: user.role, permissions: user.permissions || [], avatarUrl: user.avatarUrl }
   });
 }
 
@@ -44,7 +44,7 @@ async function login(req, res) {
   const token = signToken(user);
   return res.json({
     token,
-    user: { id: user._id, name: user.name, email: user.email, role: user.role, avatarUrl: user.avatarUrl }
+    user: { id: user._id, name: user.name, email: user.email, role: user.role, permissions: user.permissions || [], avatarUrl: user.avatarUrl }
   });
 }
 
